@@ -1,10 +1,6 @@
-# Esqueleto de projeto em NodeJS
+# GoBarber
 
-Já configurado com:
-- express
-- typescript
-- eslint
-- prettier
+Projeto do Bootacamp GoStack da Rocketseat.
 
 Para executar o ambiente de desenvolvimento, execute no terminal:
 ```
