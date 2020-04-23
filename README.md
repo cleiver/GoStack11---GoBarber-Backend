@@ -2,14 +2,16 @@
 
 # GoBarber
 
-Projeto do Bootcamp GoStack da Rocketseat.
+GoBarber is the main project developed during the GoStack 11 Bootcamp.
 
-## Instalação
+This is the backend API of the application. It was developed using NodeJS and needs a docker image of Postgres as database.
+
+## Instalation
 
 ```
-$ git clone git@github.com:cleiver/GoBarber.git
+$ git clone git@github.com:cleiver/GoStack11---GoBarber-Backend.git GoBarberAPI
 
-$ cd GoBarber
+$ cd GoBarberAPI
 
 $ yarn
 
@@ -17,3 +19,7 @@ $ docker run --name postgres_gobarber -e POSTGRES_PASSWORD=docker -p 5432:5432 -
 
 $ yarn dev:server
 ```
+
+## Frontends
+- [Web Application](https://github.com/cleiver/GoStack11---GoBarber-Web)
+- Mobile Application
