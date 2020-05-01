@@ -1,3 +1,7 @@
+/**
+ * Service classes execute one and only one business logic action
+ */
+
 import { getRepository } from 'typeorm';
 import path from 'path';
 import fs from 'fs';

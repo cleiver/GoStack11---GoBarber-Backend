@@ -1,3 +1,7 @@
+/**
+ * This is the entry door to this API world 🚪
+ */
+
 import 'reflect-metadata';
 
 import express, { Request, Response, NextFunction } from 'express';
@@ -12,9 +16,17 @@ import routes from './routes';
 
 const app = express();
 
+// so we can access this API from other domains (right now everyone can
+// access, but we can restrict it)
 app.use(cors());
+
+// so express can understand request body as json
 app.use(express.json());
+
+// so we can load our images directly, not as and typescript endpoint
 app.use('/files', express.static(uploadConfig.directory));
+
+// load all of our routes
 app.use(routes);
 
 // Global error handling. Must come after the routes
@@ -27,7 +39,7 @@ app.use(
       });
     }
 
-    console.log(error);
+    // If it's not an AppError, it's something we didn't handle
     return response.status(500).json({
       status: 'error',
       message: '💣 Something bad happened',

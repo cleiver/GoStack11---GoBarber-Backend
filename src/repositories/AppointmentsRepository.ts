@@ -1,3 +1,8 @@
+/**
+ * `typeorm` provides an default repository with commom methods.
+ * We build one ourselves when we want specific methods.
+ */
+
 import { EntityRepository, Repository } from 'typeorm';
 import Appointment from '../models/Appointment';
 

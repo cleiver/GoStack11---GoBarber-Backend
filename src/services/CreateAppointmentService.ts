@@ -1,10 +1,14 @@
-import { startOfHour } from 'date-fns';
+/**
+ * Service classes execute one and only one business logic action
+ */
 
+import { startOfHour } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
 import Appointment from '../models/Appointment';
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
 import AppError from '../errors/AppError';
 
+// Appending DTO is another pattern used to name these interfaces
 interface RequestDTO {
   provider_id: string;
   date: Date;

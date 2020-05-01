@@ -9,8 +9,11 @@ import ensureAuthentication from '../middlewares/ensureAuthentication';
 
 const appointmentsRouter = Router();
 
+// By setting the middleware at this point and in this way, we are setting it
+// to run at all routes here
 appointmentsRouter.use(ensureAuthentication);
 
+// http://base_url/appointments/
 appointmentsRouter.post('/', async (request, response) => {
   const { provider_id, date } = request.body;
 
@@ -26,6 +29,7 @@ appointmentsRouter.post('/', async (request, response) => {
   return response.json(appointment);
 });
 
+// http://base_url/appointments/
 appointmentsRouter.get('/', async (request, response) => {
   const appointmentsRepository = getCustomRepository(AppointmentsRepository);
 
