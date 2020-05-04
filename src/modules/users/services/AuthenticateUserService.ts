@@ -10,6 +10,7 @@ import User from '@modules/users/infra/typeorm/entities/Users';
 import authConfig from '@config/auth';
 
 import AppError from '@shared/errors/AppError';
+import { injectable, inject } from 'tsyringe';
 import IUserRepository from '../repositories/IUsersRepository';
 
 /**
@@ -29,9 +30,12 @@ interface IResponse {
   token: string;
 }
 
+@injectable()
 class AuthenticateUserService {
   // typescript hack to automatically create an private property with this name and type
-  constructor(private usersRepository: IUserRepository) {}
+  constructor(
+    @inject('UsersRepository') private usersRepository: IUserRepository,
+  ) {}
 
   // It is usual to name this method as `execute` or `run` but you can
   // name it however you want

@@ -8,7 +8,11 @@ import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
 
+// load database configuration
 import '@shared/infra/typeorm';
+
+// load dependency injection
+import '@shared/container';
 
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';

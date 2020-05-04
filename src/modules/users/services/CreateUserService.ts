@@ -7,12 +7,16 @@ import { hash } from 'bcryptjs';
 import User from '@modules/users/infra/typeorm/entities/Users';
 
 import AppError from '@shared/errors/AppError';
+import { injectable, inject } from 'tsyringe';
 import IUserRepository from '../repositories/IUsersRepository';
 import ICreateUserDTO from '../dtos/ICreateUserDTO';
 
+@injectable()
 class CreateUserService {
   // typescript hack to automatically create an private property with this name and type
-  constructor(private usersRepository: IUserRepository) {}
+  constructor(
+    @inject('usersRepository') private usersRepository: IUserRepository,
+  ) {}
 
   public async execute({
     name,

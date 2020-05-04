@@ -10,6 +10,7 @@ import User from '@modules/users/infra/typeorm/entities/Users';
 import uploadConfig from '@config/upload';
 
 import AppError from '@shared/errors/AppError';
+import { injectable, inject } from 'tsyringe';
 import IUserRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
@@ -17,9 +18,12 @@ interface IRequest {
   avatarFilename: string;
 }
 
+@injectable()
 export default class UpdateUserAvatarService {
   // typescript hack to automatically create an private property with this name and type
-  constructor(private usersRepository: IUserRepository) {}
+  constructor(
+    @inject('usersRepository') private usersRepository: IUserRepository,
+  ) {}
 
   public async execute({ userId, avatarFilename }: IRequest): Promise<User> {
     const user = await this.usersRepository.findById(userId);
