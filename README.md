@@ -33,6 +33,15 @@ docker run --name postgres_gobarber -e POSTGRES_PASSWORD=docker -p 5432:5432 -d 
 ```
 
 ### Initial Configuration
+
+Create a database named `gobarber` and make sure you have the extension `uuid-ossp` instaled
+
+```sql
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+```
+
+And then run:
+
 ```
 yarn typeorm migration:run
 ```
