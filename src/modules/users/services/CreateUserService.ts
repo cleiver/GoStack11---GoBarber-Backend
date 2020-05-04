@@ -2,26 +2,24 @@
  * Service classes execute one and only one business logic action
  */
 
-import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 
 import User from '@modules/users/infra/typeorm/entities/Users';
 
 import AppError from '@shared/errors/AppError';
-
-interface UserDTO {
-  name: string;
-  email: string;
-  password: string;
-}
+import IUserRepository from '../repositories/IUsersRepository';
+import ICreateUserDTO from '../dtos/ICreateUserDTO';
 
 class CreateUserService {
-  public async execute({ name, email, password }: UserDTO): Promise<User> {
-    const usersRepository = getRepository(User);
+  // typescript hack to automatically create an private property with this name and type
+  constructor(private usersRepository: IUserRepository) {}
 
-    const checkEmailExists = await usersRepository.findOne({
-      where: { email },
-    });
+  public async execute({
+    name,
+    email,
+    password,
+  }: ICreateUserDTO): Promise<User> {
+    const checkEmailExists = await this.usersRepository.findByEmail(email);
 
     if (checkEmailExists) {
       throw new AppError('Email address already used.');
@@ -29,13 +27,11 @@ class CreateUserService {
 
     const hashedPassword = await hash(password, 8);
 
-    const user = usersRepository.create({
+    const user = await this.usersRepository.create({
       name,
       email,
       password: hashedPassword,
     });
-
-    await usersRepository.save(user);
 
     delete user.password;
 

@@ -2,7 +2,6 @@
  * Service classes execute one and only one business logic action
  */
 
-import { getRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
@@ -11,6 +10,7 @@ import User from '@modules/users/infra/typeorm/entities/Users';
 import authConfig from '@config/auth';
 
 import AppError from '@shared/errors/AppError';
+import IUserRepository from '../repositories/IUsersRepository';
 
 /**
  * These interfaces are named as Request and Response to be generic, but it can
@@ -18,26 +18,25 @@ import AppError from '@shared/errors/AppError';
  */
 
 // What this service is expecting
-interface Request {
+interface IRequest {
   email: string;
   password: string;
 }
 
 // What it will return
-interface Response {
+interface IResponse {
   user: User;
   token: string;
 }
 
 class AuthenticateUserService {
+  // typescript hack to automatically create an private property with this name and type
+  constructor(private usersRepository: IUserRepository) {}
+
   // It is usual to name this method as `execute` or `run` but you can
   // name it however you want
-  public async execute({ email, password }: Request): Promise<Response> {
-    const usersRepository = getRepository(User);
-
-    const user = await usersRepository.findOne({
-      where: { email },
-    });
+  public async execute({ email, password }: IRequest): Promise<IResponse> {
+    const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
       throw new AppError('Incorrect email/password combination', 401);

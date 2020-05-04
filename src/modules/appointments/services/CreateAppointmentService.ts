@@ -3,27 +3,24 @@
  */
 
 import { startOfHour } from 'date-fns';
-import { getCustomRepository } from 'typeorm';
-import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
-import AppointmentsRepository from '@modules/appointments/repositories/AppointmentsRepository';
+
 import AppError from '@shared/errors/AppError';
 
-// Appending DTO is another pattern used to name these interfaces
-interface RequestDTO {
-  provider_id: string;
-  date: Date;
-}
+import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
+import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
+import ICreateAppointmentDTO from '../dtos/ICreateAppointmentDTO';
 
 class CreateAppointmentService {
+  // typescript hack to automatically create an private property with this name and type
+  constructor(private appointmentsRepository: IAppointmentsRepository) {}
+
   public async execute({
     provider_id,
     date,
-  }: RequestDTO): Promise<Appointment> {
-    const appointmentsRepository = getCustomRepository(AppointmentsRepository);
-
+  }: ICreateAppointmentDTO): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
 
-    const findAppointmentInSameDate = await appointmentsRepository.findByDate(
+    const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
       appointmentDate,
     );
 
@@ -31,12 +28,10 @@ class CreateAppointmentService {
       throw new AppError('This appointment is already booked');
     }
 
-    const appointment = appointmentsRepository.create({
+    const appointment = await this.appointmentsRepository.create({
       provider_id,
       date: appointmentDate,
     });
-
-    await appointmentsRepository.save(appointment);
 
     return appointment;
   }
