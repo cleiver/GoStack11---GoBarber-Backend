@@ -11,6 +11,7 @@ import uploadConfig from '@config/upload';
 
 import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
+import IStorageProvider from '@shared/providers/StorageProvider/models/IStorageProvider';
 import IUserRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
@@ -23,6 +24,7 @@ export default class UpdateUserAvatarService {
   // typescript hack to automatically create an private property with this name and type
   constructor(
     @inject('usersRepository') private usersRepository: IUserRepository,
+    @inject('StorageProvider') private storageProvider: IStorageProvider,
   ) {}
 
   public async execute({ userId, avatarFilename }: IRequest): Promise<User> {
@@ -33,19 +35,12 @@ export default class UpdateUserAvatarService {
     }
 
     if (user.avatar) {
-      const currentAvatarFilePath = path.join(
-        uploadConfig.directory,
-        user.avatar,
-      );
-
-      const currentAvatarExists = await fs.promises.stat(currentAvatarFilePath);
-
-      if (currentAvatarExists) {
-        await fs.promises.unlink(currentAvatarFilePath);
-      }
+      await this.storageProvider.delete(user.avatar);
     }
 
-    user.avatar = avatarFilename;
+    const fileName = await this.storageProvider.save(avatarFilename);
+
+    user.avatar = fileName;
 
     await this.usersRepository.update(user);
 

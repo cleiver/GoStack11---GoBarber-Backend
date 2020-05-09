@@ -2,20 +2,20 @@
  * Service classes execute one and only one business logic action
  */
 
-import { hash } from 'bcryptjs';
-
 import User from '@modules/users/infra/typeorm/entities/Users';
 
 import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
 import IUserRepository from '../repositories/IUsersRepository';
 import ICreateUserDTO from '../dtos/ICreateUserDTO';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 @injectable()
 class CreateUserService {
   // typescript hack to automatically create an private property with this name and type
   constructor(
     @inject('usersRepository') private usersRepository: IUserRepository,
+    @inject('HashProvider') private hashProvider: IHashProvider,
   ) {}
 
   public async execute({
@@ -29,7 +29,7 @@ class CreateUserService {
       throw new AppError('Email address already used.');
     }
 
-    const hashedPassword = await hash(password, 8);
+    const hashedPassword = await this.hashProvider.generate(password);
 
     const user = await this.usersRepository.create({
       name,
@@ -37,7 +37,7 @@ class CreateUserService {
       password: hashedPassword,
     });
 
-    delete user.password;
+    // delete user.password;
 
     return user;
   }

@@ -2,7 +2,6 @@
  * Service classes execute one and only one business logic action
  */
 
-import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
 import User from '@modules/users/infra/typeorm/entities/Users';
@@ -11,7 +10,9 @@ import authConfig from '@config/auth';
 
 import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
+
 import IUserRepository from '../repositories/IUsersRepository';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 /**
  * These interfaces are named as Request and Response to be generic, but it can
@@ -35,6 +36,7 @@ class AuthenticateUserService {
   // typescript hack to automatically create an private property with this name and type
   constructor(
     @inject('UsersRepository') private usersRepository: IUserRepository,
+    @inject('HashProvider') private hashProvider: IHashProvider,
   ) {}
 
   // It is usual to name this method as `execute` or `run` but you can
@@ -46,7 +48,10 @@ class AuthenticateUserService {
       throw new AppError('Incorrect email/password combination', 401);
     }
 
-    const passwordMatched = await compare(password, user.password);
+    const passwordMatched = await this.hashProvider.compare(
+      password,
+      user.password,
+    );
 
     if (!passwordMatched) {
       throw new AppError('Incorrect email/password combination', 401);
