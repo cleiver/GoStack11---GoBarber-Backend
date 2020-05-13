@@ -14,7 +14,7 @@ import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 class CreateUserService {
   // typescript hack to automatically create an private property with this name and type
   constructor(
-    @inject('usersRepository') private usersRepository: IUserRepository,
+    @inject('UsersRepository') private usersRepository: IUserRepository,
     @inject('HashProvider') private hashProvider: IHashProvider,
   ) {}
 

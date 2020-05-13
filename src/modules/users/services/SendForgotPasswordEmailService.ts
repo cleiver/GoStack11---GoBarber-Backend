@@ -18,9 +18,9 @@ interface IRequest {
 export default class SendForgotPasswordEmailService {
   // typescript hack to automatically create an private property with this name and type
   constructor(
-    @inject('usersRepository') private usersRepository: IUserRepository,
+    @inject('UsersRepository') private usersRepository: IUserRepository,
     @inject('MailProvider') private mailProvider: IMailProvider,
-    @inject('UserTokenRepository')
+    @inject('UserTokensRepository')
     private userTokenRepository: IUserTokensRepository,
   ) {}
 
@@ -31,12 +31,12 @@ export default class SendForgotPasswordEmailService {
       throw new AppError('User does not exists');
     }
 
-    await this.userTokenRepository.generate(user.id);
+    const { token } = await this.userTokenRepository.generate(user.id);
 
     await this.mailProvider.sendMail(
       email,
       'Forgot Password',
-      'We received your request for password reset',
+      `We received your request for password reset. Your token is ${token}`,
     );
   }
 }

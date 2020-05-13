@@ -28,7 +28,7 @@ app.use(cors());
 app.use(express.json());
 
 // so we can load our images directly, not as and typescript endpoint
-app.use('/files', express.static(uploadConfig.directory));
+app.use('/files', express.static(uploadConfig.uploadsFolder));
 
 // load all of our routes
 app.use(routes);
@@ -47,6 +47,7 @@ app.use(
     return response.status(500).json({
       status: 'error',
       message: '💣 Something bad happened',
+      log: error.message,
     });
   },
 );

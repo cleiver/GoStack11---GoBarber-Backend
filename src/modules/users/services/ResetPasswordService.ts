@@ -19,10 +19,10 @@ interface IRequest {
 export default class ResetPasswordService {
   // typescript hack to automatically create an private property with this name and type
   constructor(
-    @inject('usersRepository')
+    @inject('UsersRepository')
     private usersRepository: IUserRepository,
 
-    @inject('UserTokenRepository')
+    @inject('UserTokensRepository')
     private userTokenRepository: IUserTokensRepository,
 
     @inject('HashProvider')

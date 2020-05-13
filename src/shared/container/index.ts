@@ -9,6 +9,9 @@ import IAppointmentsRepository from '@modules/appointments/repositories/IAppoint
 import IUserRepository from '@modules/users/repositories/IUsersRepository';
 import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 
+import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
+import UserTokensRepository from '@modules/users/infra/typeorm/repositories/UserTokensRepository';
+
 /**
  * `registerSingleton` loads only one instance of the class, no matter how many
  * times it is instanciated.
@@ -23,4 +26,9 @@ container.registerSingleton<IAppointmentsRepository>(
 container.registerSingleton<IUserRepository>(
   'UsersRepository',
   UsersRepository,
+);
+
+container.registerSingleton<IUserTokensRepository>(
+  'UserTokensRepository',
+  UserTokensRepository,
 );
