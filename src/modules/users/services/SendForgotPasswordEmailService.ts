@@ -3,6 +3,8 @@
  */
 
 import { injectable, inject } from 'tsyringe';
+import path from 'path';
+
 import AppError from '@shared/errors/AppError';
 import IMailProvider from '@shared/providers/MailProvider/models/IMailprovider';
 
@@ -33,10 +35,26 @@ export default class SendForgotPasswordEmailService {
 
     const { token } = await this.userTokenRepository.generate(user.id);
 
-    await this.mailProvider.sendMail(
-      email,
-      'Forgot Password',
-      `We received your request for password reset. Your token is ${token}`,
+    const template = path.resolve(
+      __dirname,
+      '..',
+      'templates',
+      'forgot_password.hbs',
     );
+
+    await this.mailProvider.sendMail({
+      to: {
+        name: user.name,
+        email: user.email,
+      },
+      subject: '[GoBarber] Your password reset token is here 🎉',
+      template: {
+        file: template,
+        variables: {
+          name: user.name,
+          link: `http://localhost:3000/reset_password?token=${token}`,
+        },
+      },
+    });
   }
 }
