@@ -4,16 +4,23 @@ import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepo
 import FakeHashProvider from '@modules/users/providers/HashProvider/fakes/FakeHashProvider';
 import CreateUserService from '@modules/users/services/CreateUserService';
 
+let fakeUserRepository: FakeUsersRepository;
+let fakeHashProvider: FakeHashProvider;
+let CreateUser: CreateUserService;
+
 describe('User creation', () => {
+  beforeEach(() => {
+    fakeUserRepository = new FakeUsersRepository();
+    fakeHashProvider = new FakeHashProvider();
+
+    CreateUser = new CreateUserService(fakeUserRepository, fakeHashProvider);
+  });
+
+  /**
+   * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+   */
+
   it('should be able to create a new user', async () => {
-    const fakeUserRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-
-    const CreateUser = new CreateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-
     const user = await CreateUser.execute({
       name: 'John Toe',
       email: 'john@toe.net',
@@ -23,15 +30,11 @@ describe('User creation', () => {
     expect(user).toHaveProperty('id');
   });
 
+  /**
+   * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+   */
+
   it('should not allow another user to register with an existing email', async () => {
-    const fakeUserRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-
-    const CreateUser = new CreateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-
     await CreateUser.execute({
       name: 'John Toe',
       email: 'toefamily@foot.net',

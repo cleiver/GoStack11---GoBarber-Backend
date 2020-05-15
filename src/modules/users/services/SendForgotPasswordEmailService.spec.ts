@@ -55,6 +55,10 @@ describe('Forgot password email delivery', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
+  /**
+   * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+   */
+
   it('should generate a user token', async () => {
     const fakeGenerateTokenFunction = jest.spyOn(
       fakeUserTokensRepository,

@@ -5,20 +5,28 @@ import FakeHashProvider from '@modules/users/providers/HashProvider/fakes/FakeHa
 import CreateUserService from '@modules/users/services/CreateUserService';
 import AuthenticateUserService from '@modules/users/services/AuthenticateUserService';
 
+let fakeUserRepository: FakeUsersRepository;
+let fakeHashProvider: FakeHashProvider;
+let CreateUser: CreateUserService;
+let AuthenticateUser: AuthenticateUserService;
+
 describe('User authentication', () => {
+  beforeEach(() => {
+    fakeUserRepository = new FakeUsersRepository();
+    fakeHashProvider = new FakeHashProvider();
+
+    CreateUser = new CreateUserService(fakeUserRepository, fakeHashProvider);
+    AuthenticateUser = new AuthenticateUserService(
+      fakeUserRepository,
+      fakeHashProvider,
+    );
+  });
+
+  /**
+   * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+   */
+
   it('should be able to authenticate', async () => {
-    const fakeUserRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-
-    const CreateUser = new CreateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-    const AuthenticateUser = new AuthenticateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-
     const user = await CreateUser.execute({
       name: 'John Toe',
       email: 'john@toe.net',
@@ -34,19 +42,11 @@ describe('User authentication', () => {
     expect(response.user).toEqual(user);
   });
 
+  /**
+   * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+   */
+
   it('should NOT allow a user to authenticate with the wrong password', async () => {
-    const fakeUserRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-
-    const CreateUser = new CreateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-    const AuthenticateUser = new AuthenticateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-
     await CreateUser.execute({
       name: 'John Toe',
       email: 'john@toe.net',
@@ -61,16 +61,25 @@ describe('User authentication', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  describe('User authentication', () => {
-    it('should NOT allow unregistered users to authenticate', async () => {
-      const fakeUserRepository = new FakeUsersRepository();
-      const fakeHashProvider = new FakeHashProvider();
+  /**
+   * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+   */
 
-      const AuthenticateUser = new AuthenticateUserService(
+  describe('User authentication', () => {
+    beforeEach(() => {
+      fakeUserRepository = new FakeUsersRepository();
+      fakeHashProvider = new FakeHashProvider();
+      AuthenticateUser = new AuthenticateUserService(
         fakeUserRepository,
         fakeHashProvider,
       );
+    });
 
+    /**
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     */
+
+    it('should NOT allow unregistered users to authenticate', async () => {
       await expect(
         AuthenticateUser.execute({
           email: 'john@toe.net',
