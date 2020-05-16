@@ -2,7 +2,7 @@
  * Service classes execute one and only one business logic action
  */
 
-import { startOfHour } from 'date-fns';
+import { startOfHour, isBefore, getHours } from 'date-fns';
 
 import AppError from '@shared/errors/AppError';
 
@@ -24,7 +24,23 @@ class CreateAppointmentService {
     client_id,
     date,
   }: ICreateAppointmentDTO): Promise<Appointment> {
+    if (provider_id === client_id) {
+      throw new AppError('You cannot schedule an appointment with yourself');
+    }
+
     const appointmentDate = startOfHour(date);
+
+    if (isBefore(appointmentDate, Date.now())) {
+      throw new AppError(
+        'You cannot schedule an appointment in a past date and time',
+      );
+    }
+
+    if (getHours(appointmentDate) < 8 || getHours(appointmentDate) > 17) {
+      throw new AppError(
+        'You can only schedule appointments between 8h and 17h',
+      );
+    }
 
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
       appointmentDate,
