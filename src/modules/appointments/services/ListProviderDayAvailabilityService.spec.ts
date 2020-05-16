@@ -1,5 +1,3 @@
-import AppError from '@shared/errors/AppError';
-
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 import ListProviderDayAvailabilityService from './ListProviderDayAvailabilityService';
 
@@ -21,15 +19,18 @@ describe('Providers availability per day', () => {
   it('should be able to list the availability of a provider in a day', async () => {
     // 4 = may in computer friendly
     await fakeAppointmentsRepository.create({
-      provider_id: 'id-01',
+      provider_id: 'provider-id-01',
+      client_id: 'client-id-1',
       date: new Date(2020, 4, 17, 8, 0, 0),
     });
     await fakeAppointmentsRepository.create({
-      provider_id: 'id-01',
+      provider_id: 'provider-id-01',
+      client_id: 'client-id-1',
       date: new Date(2020, 4, 17, 13, 0, 0),
     });
     await fakeAppointmentsRepository.create({
-      provider_id: 'id-01',
+      provider_id: 'provider-id-01',
+      client_id: 'client-id-1',
       date: new Date(2020, 4, 17, 17, 0, 0),
     });
 
@@ -39,7 +40,7 @@ describe('Providers availability per day', () => {
 
     // 5 = may in human friendly
     const availability = await ListProviderDayAvailability.execute({
-      provider_id: 'id-01',
+      provider_id: 'provider-id-01',
       day: 17,
       month: 5,
       year: 2020,

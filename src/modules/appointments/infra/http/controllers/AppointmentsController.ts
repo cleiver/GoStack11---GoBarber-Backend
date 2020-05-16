@@ -7,6 +7,7 @@ import AppointmentsRepository from '@modules/appointments/infra/typeorm/reposito
 
 export default class AppointmentsController {
   public async create(request: Request, response: Response): Promise<Response> {
+    const client_id = request.user.id;
     const { provider_id, date } = request.body;
 
     const parsedDate = parseISO(date);
@@ -15,6 +16,7 @@ export default class AppointmentsController {
 
     const appointment = await createAppointment.execute({
       provider_id,
+      client_id,
       date: parsedDate,
     });
 
