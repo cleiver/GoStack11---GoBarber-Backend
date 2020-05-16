@@ -21,7 +21,7 @@ type IResponse = Array<{
 }>;
 
 @injectable()
-export default class ListProviderMonthAvailabilityService {
+export default class ListProviderDayAvailabilityService {
   // typescript hack to automatically create an private property with this name and type
   constructor(
     @inject('AppointmentsRepository')
