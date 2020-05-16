@@ -25,10 +25,6 @@ export default class ListProvidersService {
       except_user_id: user_id,
     });
 
-    if (!users) {
-      throw new AppError('No providers available to list');
-    }
-
     return users;
   }
 }
