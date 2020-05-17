@@ -3,7 +3,7 @@
  */
 export default {
   jwt: {
-    secret: 'insert-hash-salt-here',
+    secret: process.env.APP_SECRET,
     expiresIn: '1d',
   },
 };
