@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { celebrate, Segments, Joi } from 'celebrate';
 
 import ensureAuthentication from '@modules/users/infra/middlewares/ensureAuthentication';
 import AppointmentsController from '../controllers/AppointmentsController';
@@ -19,6 +20,15 @@ appointmentsRouter.get('/', appointmentsController.index);
  * Appointment creation
  * POST http://base_url/appointments/
  */
-appointmentsRouter.post('/', appointmentsController.create);
+appointmentsRouter.post(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      provider_id: Joi.string().uuid().required(),
+      date: Joi.date(),
+    },
+  }),
+  appointmentsController.create,
+);
 
 export default appointmentsRouter;

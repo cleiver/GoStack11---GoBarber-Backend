@@ -7,6 +7,7 @@ import 'reflect-metadata';
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
+import { errors } from 'celebrate';
 
 // load database configuration
 import '@shared/infra/typeorm';
@@ -32,6 +33,9 @@ app.use('/files', express.static(uploadConfig.uploadsFolder));
 
 // load all of our routes
 app.use(routes);
+
+// Celebrate error handling. Must come before ours if we want to show its messages
+app.use(errors());
 
 // Global error handling. Must come after the routes
 app.use(
