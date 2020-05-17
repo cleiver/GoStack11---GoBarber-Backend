@@ -4,11 +4,13 @@ import ensureAuthentication from '@modules/users/infra/middlewares/ensureAuthent
 import ProvidersController from '../controllers/ProvidersController';
 import ProviderMonthAvailabilityController from '../controllers/ProviderMonthAvailabilityController';
 import ProviderDayAvailabilityController from '../controllers/ProviderDayAvailabilityController';
+import ProviderAppointmentsController from '../controllers/ProviderAppointmentsController';
 
 const providersRouter = Router();
 const providersController = new ProvidersController();
 const providerMonthAvailabilityController = new ProviderMonthAvailabilityController();
 const providerDayAvailabilityController = new ProviderDayAvailabilityController();
+const providerAppointmentsController = new ProviderAppointmentsController();
 
 // By setting the middleware at this point and in this way, we are setting it to run in all routes
 providersRouter.use(ensureAuthentication);
@@ -32,5 +34,11 @@ providersRouter.post(
   '/:provider_id/day-availability',
   providerDayAvailabilityController.index,
 );
+
+/**
+ * Provider appointments
+ * GET http://base_url/providers/appointments
+ */
+providersRouter.get('/appointments', providerAppointmentsController.index);
 
 export default providersRouter;
