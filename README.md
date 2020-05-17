@@ -31,6 +31,9 @@ yarn
 ```
 docker run --name postgres_gobarber -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
 ```
+```
+docker run --name mongodb_gobarber -p 27017:27017 -d -t mongo
+```
 
 ### Initial Configuration
 
