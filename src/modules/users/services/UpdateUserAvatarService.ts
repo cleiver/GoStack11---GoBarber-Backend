@@ -2,12 +2,7 @@
  * Service classes execute one and only one business logic action
  */
 
-import path from 'path';
-import fs from 'fs';
-
 import User from '@modules/users/infra/typeorm/entities/Users';
-
-import uploadConfig from '@config/upload';
 
 import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
@@ -23,7 +18,7 @@ interface IRequest {
 export default class UpdateUserAvatarService {
   // typescript hack to automatically create an private property with this name and type
   constructor(
-    @inject('usersRepository') private usersRepository: IUserRepository,
+    @inject('UsersRepository') private usersRepository: IUserRepository,
     @inject('StorageProvider') private storageProvider: IStorageProvider,
   ) {}
 

@@ -2,11 +2,10 @@
  * Service classes execute one and only one business logic action
  */
 
-import { sign } from 'jsonwebtoken';
-
 import User from '@modules/users/infra/typeorm/entities/Users';
 
 import authConfig from '@config/auth';
+import { sign } from 'jsonwebtoken';
 
 import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
