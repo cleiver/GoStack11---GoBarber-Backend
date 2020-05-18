@@ -16,7 +16,7 @@ import '@shared/infra/typeorm';
 // load dependency injection
 import '@shared/container';
 
-import uploadConfig from '@config/upload';
+import storageConfig from '@config/storage';
 import AppError from '@shared/errors/AppError';
 import routes from './routes';
 
@@ -30,7 +30,7 @@ app.use(cors());
 app.use(express.json());
 
 // so we can load our images directly, not as and typescript endpoint
-app.use('/files', express.static(uploadConfig.uploadsFolder));
+app.use('/files', express.static(storageConfig.uploadsFolder));
 
 // load all of our routes
 app.use(routes);
