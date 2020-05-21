@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "dev:docker": "sudo docker start postgres_gobarber mongodb_gobarber",
+    "dev:docker": "docker start postgres_gobarber mongodb_gobarber redis_gobarber",
     "dev:server": "ts-node-dev -r tsconfig-paths/register --inspect --transpileOnly --ignore-watch node_modules src/shared/infra/http/server.ts",
     "dev:start": "yarn dev:docker && yarn dev:server",
     "start": "ts-node src/shared/infra/http/server.ts",
@@ -24,6 +24,7 @@
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "handlebars": "^4.7.6",
+    "ioredis": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mime": "^2.4.5",
     "mongodb": "^3.5.7",

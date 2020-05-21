@@ -17,7 +17,7 @@ In this application, clients can schedule a time with their favorite barber to h
 For now the code is as I have learnt during the course. However, I'm planning in improve it further with some alterations and more functionalities. I also plan to make it available online for demonstration.
 
 ## Installing
-This API just need NodeJs and a Postgres database to run.
+This API runs on NodeJs and needs Postgres, MongoDB and Redis.
 
 ```
 git clone git@github.com:cleiver/GoStack11---GoBarber-Backend.git GoBarberAPI
@@ -33,6 +33,9 @@ docker run --name postgres_gobarber -e POSTGRES_PASSWORD=docker -p 5432:5432 -d 
 ```
 ```
 docker run --name mongodb_gobarber -p 27017:27017 -d -t mongo
+```
+```
+docker run --name redis_gobarber -p 6379:6379 -d -t redis
 ```
 
 ### Initial Configuration
