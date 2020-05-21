@@ -1,6 +1,3 @@
-import Redis, { Redis as IRedis } from 'ioredis';
-
-import cacheConfig from '@config/redis';
 import ICacheProvider from '../models/ICacheProvider';
 
 interface ICacheData {

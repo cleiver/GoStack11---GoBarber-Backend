@@ -18,9 +18,13 @@ import '@shared/container';
 
 import storageConfig from '@config/storage';
 import AppError from '@shared/errors/AppError';
+import rateLimiter from './middlewares/rateLimiterRedis';
 import routes from './routes';
 
 const app = express();
+
+// Check for a flood in requests (DDOS, brute force etc)
+app.use(rateLimiter);
 
 // so we can access this API from other domains (right now everyone can
 // access, but we can restrict it)
