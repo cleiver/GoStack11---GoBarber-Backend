@@ -3,17 +3,24 @@ import AppError from '@shared/errors/AppError';
 import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
 import FakeHashProvider from '@modules/users/providers/HashProvider/fakes/FakeHashProvider';
 import CreateUserService from '@modules/users/services/CreateUserService';
+import FakeCacheProvider from '@shared/providers/CacheProvider/fakes/FakeCacheProvider';
 
 let fakeUserRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
 let CreateUser: CreateUserService;
+let fakeCacheProvider: FakeCacheProvider;
 
 describe('User creation', () => {
   beforeEach(() => {
     fakeUserRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
+    fakeCacheProvider = new FakeCacheProvider();
 
-    CreateUser = new CreateUserService(fakeUserRepository, fakeHashProvider);
+    CreateUser = new CreateUserService(
+      fakeUserRepository,
+      fakeHashProvider,
+      fakeCacheProvider,
+    );
   });
 
   /**

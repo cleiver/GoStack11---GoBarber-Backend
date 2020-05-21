@@ -6,6 +6,7 @@ import User from '@modules/users/infra/typeorm/entities/Users';
 
 import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
+import ICacheProvider from '@shared/providers/CacheProvider/models/ICacheProvider';
 import IUserRepository from '../repositories/IUsersRepository';
 import ICreateUserDTO from '../dtos/ICreateUserDTO';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
@@ -16,6 +17,7 @@ class CreateUserService {
   constructor(
     @inject('UsersRepository') private usersRepository: IUserRepository,
     @inject('HashProvider') private hashProvider: IHashProvider,
+    @inject('CacheProvider') private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({
@@ -37,7 +39,7 @@ class CreateUserService {
       password: hashedPassword,
     });
 
-    // delete user.password;
+    await this.cacheProvider.destroyPrefix('providers-list');
 
     return user;
   }
