@@ -10,7 +10,7 @@ import IAvailabilityInDayForProviderDTO from '../dtos/IAvailabilityInDayForProvi
 export default interface IAppointmentsRepository {
   create(data: ICreateAppointmentDTO): Promise<Appointment>;
   find(): Promise<Appointment[]>;
-  findByDate(date: Date): Promise<Appointment | undefined>;
+  findByDate(date: Date, provider_id: string): Promise<Appointment | undefined>;
   findAvailabilityInMonthForProvider(
     data: IAvailabilityInMonthForProviderDTO,
   ): Promise<Appointment[]>;

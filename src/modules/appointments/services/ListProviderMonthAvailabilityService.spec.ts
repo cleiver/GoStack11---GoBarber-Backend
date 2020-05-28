@@ -94,10 +94,7 @@ describe('Providers availability per month', () => {
     });
 
     expect(availability).toEqual(
-      expect.arrayContaining([
-        { day: 16, available: false },
-        { day: 17, available: true },
-      ]),
+      expect.arrayContaining([{ day: 16, available: false }]),
     );
   });
 });
