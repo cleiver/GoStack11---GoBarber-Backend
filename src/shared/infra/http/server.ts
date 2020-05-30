@@ -23,9 +23,6 @@ import routes from './routes';
 
 const app = express();
 
-// Check for a flood in requests (DDOS, brute force etc)
-app.use(rateLimiter);
-
 // so we can access this API from other domains (right now everyone can
 // access, but we can restrict it)
 app.use(cors());
@@ -35,6 +32,10 @@ app.use(express.json());
 
 // so we can load our images directly, not as and typescript endpoint
 app.use('/files', express.static(storageConfig.uploadsFolder));
+
+// Check for a flood in requests (DDOS, brute force etc)
+// It won't apply to requests to /files because we set it after that middleware
+app.use(rateLimiter);
 
 // load all of our routes
 app.use(routes);
